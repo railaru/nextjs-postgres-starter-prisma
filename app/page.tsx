@@ -1,5 +1,5 @@
-import Form from "@/components/form";
-import Table from "@/components/table";
+import Form from "@/components/Form";
+import Table from "@/components/Table";
 
 // Prisma does not support Edge without the Data Proxy currently
 // export const runtime = 'edge'
