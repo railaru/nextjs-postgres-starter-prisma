@@ -1,16 +1,17 @@
-import prisma from '@/lib/prisma'
-import { timeAgo } from '@/lib/utils'
-import Image from 'next/image'
-import RefreshButton from './refresh-button'
+import prisma from "@/lib/prisma";
+import { timeAgo } from "@/lib/utils";
+import Image from "next/image";
+import RefreshButton from "./refresh-button";
+import Link from "next/link";
 
 export default async function Table() {
-  const startTime = Date.now()
-  const users = await prisma.users.findMany()
-  const duration = Date.now() - startTime
+  const startTime = Date.now();
+  const users = await prisma.users.findMany();
+  const duration = Date.now() - startTime;
 
   return (
-    <div className="bg-white/30 p-12 shadow-xl ring-1 ring-gray-900/5 rounded-lg backdrop-blur-lg max-w-xl mx-auto w-full">
-      <div className="flex justify-between items-center mb-4">
+    <div className="w-full p-12 mx-auto rounded-lg shadow-xl bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg">
+      <div className="flex items-center justify-between mb-4">
         <div className="space-y-1">
           <h2 className="text-xl font-semibold">Recent Users</h2>
           <p className="text-sm text-gray-500">
@@ -21,8 +22,9 @@ export default async function Table() {
       </div>
       <div className="divide-y divide-gray-900/5">
         {users.map((user) => (
-          <div
+          <Link
             key={user.name}
+            href={`/users/${user.id}`}
             className="flex items-center justify-between py-3"
           >
             <div className="flex items-center space-x-4">
@@ -39,9 +41,9 @@ export default async function Table() {
               </div>
             </div>
             <p className="text-sm text-gray-500">{timeAgo(user.createdAt)}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
-  )
+  );
 }

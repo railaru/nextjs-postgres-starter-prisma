@@ -2,10 +2,11 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    serverActions: true,
   },
   images: {
-    domains: ['pbs.twimg.com'],
+    domains: ["pbs.twimg.com", "via.placeholder.com"],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
