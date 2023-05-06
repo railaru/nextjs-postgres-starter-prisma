@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
-    <main className="grid gap-12 lg:gap-8 lg:grid-cols-2">
+    <main className="grid gap-12 lg:grid-cols-2">
       <Form />
 
       {/* @ts-expect-error Async Server Component */}

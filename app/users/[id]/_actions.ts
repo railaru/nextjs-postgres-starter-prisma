@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function remove(formData: FormData) {
   const id = Number(formData.get("id"));
@@ -14,7 +13,6 @@ export async function remove(formData: FormData) {
   });
 
   revalidateTag("users");
-  redirect("/");
 }
 
 export async function update(formData: FormData) {
@@ -25,8 +23,20 @@ export async function update(formData: FormData) {
       id,
     },
     data: {
-      name: formData.get("name")?.toString() ?? "",
-      email: formData.get("email")?.toString() ?? "",
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+    },
+  });
+
+  revalidateTag("users");
+}
+
+export async function create(formData: FormData) {
+  await prisma.users.create({
+    data: {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      image: "https://robohash.org/example.png",
     },
   });
 
