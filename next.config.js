@@ -5,7 +5,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["pbs.twimg.com", "via.placeholder.com"],
+    domains: ["pbs.twimg.com", "robohash.org"],
   },
 };
 

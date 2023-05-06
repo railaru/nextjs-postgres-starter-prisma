@@ -1,12 +1,17 @@
-import React, { ReactNode } from "react";
+import classnames from "classnames";
+import React, { HtmlHTMLAttributes, ReactNode } from "react";
 
-type Props = {
-  children: ReactNode;
-};
+type Props = HtmlHTMLAttributes<HTMLDivElement>;
 
-export default function Pane({ children }: Props) {
+export default function Pane({ children, ...props }: Props) {
   return (
-    <div className="w-full p-8 mx-auto bg-white rounded-lg shadow-lg ring-1 ring-gray-900/5 backdrop-blur-lg">
+    <div
+      {...props}
+      className={classnames(
+        "w-full p-8 mx-auto bg-white rounded-lg shadow-lg ring-1 ring-gray-900/5 backdrop-blur-lg",
+        props.className
+      )}
+    >
       {children}
     </div>
   );

@@ -1,44 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import { revalidateTag } from "next/server";
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import React from "react";
 import prisma from "@/lib/prisma";
+import Pane from "@/components/Pane";
+import InputGroup from "@/components/InputGroup";
+import Button from "@/components/Button";
+import { remove, update } from "./_actions";
 
 type Props = {
   params: {
     id: string;
   };
 };
-
-async function remove(formData: FormData) {
-  "use server";
-
-  await prisma.users.delete({
-    where: {
-      id: Number(formData.get("id")),
-    },
-  });
-
-  revalidateTag("users");
-  redirect("/");
-}
-
-async function update(formData: FormData) {
-  "use server";
-
-  await prisma.users.update({
-    where: {
-      id: Number(formData.get("id")),
-    },
-    data: {
-      name: formData.get("name")?.toString() ?? "",
-      email: formData.get("email")?.toString() ?? "",
-    },
-  });
-
-  revalidateTag("users");
-}
 
 export default async function Page(props: Props) {
   const user = await prisma.users.findUnique({
@@ -47,78 +22,66 @@ export default async function Page(props: Props) {
     },
   });
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <div>
-      <h1 className="text-xl">Single User Page</h1>
-
-      <div>
-        <Link href="/" className="text-blue-600">
-          Home
-        </Link>
-      </div>
-
-      <div className="space-y-4">
-        {user?.image && (
-          <Image src={user?.image} alt={user?.name} width={45} height={45} />
-        )}
-
-        <h3 className="text-lg">{user?.name}</h3>
-
-        <h3>{user?.email}</h3>
-
-        <form action={update} className="mt-4">
-          <div className="mb-4">
-            <label
-              htmlFor="name"
-              className="block mb-2 font-semibold text-gray-700"
-            >
-              Name:
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-              defaultValue={user?.name ?? ""}
-              className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:outline-none focus:border-vercel-purple-500"
+      <Pane className="max-w-[700px] divide-y divide-gray-900/5">
+        <div className="flex flex-col items-center">
+          <h2 className="text-xl font-semibold">Edit User Page</h2>
+          <Link href="/" className="inline-block text-blue-600">
+            ← Home
+          </Link>
+        </div>
+        <div className="flex items-center justify-between py-4 mt-4">
+          <div className="flex items-center space-x-4">
+            <Image
+              src={user.image}
+              alt={user.name}
+              width={48}
+              height={48}
+              className="rounded-full ring-1 ring-gray-900/5"
             />
+            <div className="space-y-1">
+              <p className="font-medium leading-none">{user.name}</p>
+              <p className="text-sm text-gray-500">{user.email}</p>
+            </div>
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block mb-2 font-semibold text-gray-700"
-            >
-              Email:
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email address"
-              defaultValue={user?.email ?? ""}
-              className="w-full px-4 py-2 border border-gray-400 rounded-lg focus:outline-none focus:border-vercel-purple-500"
+          <form action={remove}>
+            <input type="hidden" name="id" value={user?.id} />
+
+            <Button type="submit" className="bg-red-500 hover:bg-red-600">
+              Remove
+            </Button>
+          </form>
+        </div>
+        <div className="mt-4 space-y-4">
+          <form action={update} className="mt-4 space-y-4">
+            <InputGroup
+              label="Name:"
+              inputProps={{
+                name: "name",
+                id: "name",
+                placeholder: "Enter your name",
+                defaultValue: user.name,
+              }}
             />
-          </div>
-          <input type="hidden" name="id" value={user?.id} />
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-purple-500 rounded-lg hover:bg-purple-600"
-          >
-            Submit
-          </button>
-        </form>
-
-        <form action={remove}>
-          <input type="hidden" name="id" value={user?.id} />
-
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-          >
-            Remove
-          </button>
-        </form>
-      </div>
+            <InputGroup
+              label="Email:"
+              inputProps={{
+                name: "email",
+                id: "email",
+                placeholder: "Enter your email address",
+                defaultValue: user.email,
+              }}
+            />
+            <input type="hidden" name="id" value={user?.id} />
+            <Button type="submit">Submit</Button>
+          </form>
+        </div>
+      </Pane>
     </div>
   );
 }

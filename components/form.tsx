@@ -1,6 +1,6 @@
 import React from "react";
 import prisma from "@/lib/prisma";
-import { revalidateTag } from "next/server";
+import { revalidateTag, revalidatePath } from "next/cache";
 import InputGroup from "./InputGroup";
 import Pane from "./Pane";
 import Button from "./Button";
@@ -12,7 +12,7 @@ async function create(formData: FormData) {
     data: {
       name: formData.get("name")?.toString() ?? "",
       email: formData.get("email")?.toString() ?? "",
-      image: "https://via.placeholder.com/150",
+      image: "https://robohash.org/example.png",
     },
   });
 

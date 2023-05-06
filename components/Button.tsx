@@ -3,6 +3,7 @@ import React, {
   DetailedHTMLProps,
   ReactNode,
 } from "react";
+import classnames from "classnames";
 
 type Button = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -15,7 +16,10 @@ export default function Button({ children, ...props }: Button) {
   return (
     <button
       {...props}
-      className="px-4 py-2 text-white bg-green-700 rounded hover:bg-green-800"
+      className={classnames(
+        "px-4 py-2 text-white bg-green-700 rounded hover:bg-green-800",
+        props.className
+      )}
     >
       {children}
     </button>

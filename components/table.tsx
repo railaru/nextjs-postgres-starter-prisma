@@ -3,15 +3,21 @@ import { timeAgo } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import Pane from "./Pane";
+import { revalidateTag } from "next/cache";
+import { users } from "@prisma/client";
 
 export default async function Table() {
-  const users = await prisma.users.findMany();
+  const res = await fetch("http://localhost:3001/users/api", {
+    cache: "no-cache",
+    next: { tags: ["users"] },
+  });
+  const data = (await res.json()) as { users: users[] };
 
   return (
     <Pane>
       <h2 className="text-xl font-semibold">Recent Users</h2>
       <div className="mt-4 divide-y divide-gray-900/5">
-        {users.map((user) => (
+        {data.users.map((user) => (
           <Link
             key={user.name}
             href={`/users/${user.id}`}
