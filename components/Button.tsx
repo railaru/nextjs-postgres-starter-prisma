@@ -1,6 +1,13 @@
-import React, { HtmlHTMLAttributes, ReactNode } from "react";
+import React, {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  ReactNode,
+} from "react";
 
-type Button = HtmlHTMLAttributes<HTMLButtonElement> & {
+type Button = DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> & {
   children: ReactNode;
 };
 
@@ -8,7 +15,7 @@ export default function Button({ children, ...props }: Button) {
   return (
     <button
       {...props}
-      className="px-4 py-2 text-white bg-purple-500 rounded-lg hover:bg-purple-600"
+      className="px-4 py-2 text-white bg-green-700 rounded hover:bg-green-800"
     >
       {children}
     </button>

@@ -20,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} container mt-8`}>{children}</body>
+      <body className={`${inter.variable} container max-w-[1280px] mt-8`}>
+        {children}
+      </body>
     </html>
   );
 }

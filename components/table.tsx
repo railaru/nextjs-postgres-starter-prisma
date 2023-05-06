@@ -1,26 +1,16 @@
 import prisma from "@/lib/prisma";
 import { timeAgo } from "@/lib/utils";
 import Image from "next/image";
-import RefreshButton from "./RefreshButton";
 import Link from "next/link";
+import Pane from "./Pane";
 
 export default async function Table() {
-  const startTime = Date.now();
   const users = await prisma.users.findMany();
-  const duration = Date.now() - startTime;
 
   return (
-    <div className="w-full p-12 mx-auto rounded-lg shadow-xl bg-white/30 ring-1 ring-gray-900/5 backdrop-blur-lg">
-      <div className="flex items-center justify-between mb-4">
-        <div className="space-y-1">
-          <h2 className="text-xl font-semibold">Recent Users</h2>
-          <p className="text-sm text-gray-500">
-            Fetched {users.length} users in {duration}ms
-          </p>
-        </div>
-        <RefreshButton />
-      </div>
-      <div className="divide-y divide-gray-900/5">
+    <Pane>
+      <h2 className="text-xl font-semibold">Recent Users</h2>
+      <div className="mt-4 divide-y divide-gray-900/5">
         {users.map((user) => (
           <Link
             key={user.name}
@@ -44,6 +34,6 @@ export default async function Table() {
           </Link>
         ))}
       </div>
-    </div>
+    </Pane>
   );
 }

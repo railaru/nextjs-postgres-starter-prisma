@@ -22,7 +22,7 @@ async function create(formData: FormData) {
 export default function Form() {
   return (
     <Pane>
-      <h2 className="text-xl font-semibold">Create new user</h2>
+      <h2 className="text-xl font-semibold">Create a new user</h2>
       <form action={create} className="mt-4 space-y-4">
         <InputGroup
           label="Name:"
@@ -40,7 +40,7 @@ export default function Form() {
             placeholder: "Enter your email address",
           }}
         />
-        <Button>Submit</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Pane>
   );
