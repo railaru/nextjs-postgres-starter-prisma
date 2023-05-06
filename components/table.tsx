@@ -1,10 +1,5 @@
 import prisma from "@/lib/prisma";
-import Image from "next/image";
 import Pane from "./Pane";
-import { remove, update } from "@/app/users/[id]/_actions";
-import Button from "./Button";
-import InputGroup from "./InputGroup";
-import Link from "next/link";
 import UserBlock from "./UserBlock";
 
 export default async function Table() {
